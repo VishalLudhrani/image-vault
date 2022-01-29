@@ -1,11 +1,15 @@
 import './App.css';
 import Navbar from './components/Navbar';
+import LandingPage from './components/LandingPage';
+import theme from './theme/theme';
+import { ThemeProvider } from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
       <Navbar />
-    </div>
+      <LandingPage />
+    </ThemeProvider>
   );
 }
 
