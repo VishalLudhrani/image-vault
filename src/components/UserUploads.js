@@ -1,6 +1,5 @@
-import { Box, ImageList, ImageListItem, ImageListItemBar, Typography } from "@mui/material";
+import { ImageList, ImageListItem, ImageListItemBar, Typography } from "@mui/material";
 import React from "react";
-import Navbar from "./Navbar";
 
 const userUploads = [
   {
@@ -38,7 +37,6 @@ const userUploads = [
 const UserUploads = () => {
   return(
     <>
-      <Navbar />
       <Typography
         variant="h3"
         component="h2"

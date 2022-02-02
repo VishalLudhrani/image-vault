@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   return(
     <>
       <Box
@@ -25,8 +25,20 @@ const LandingPage = () => {
           style={{
             fontSize: "1.2rem"
           }}
+          onClick={props.loginFunc}
         >
           Create my account!
+        </Button>
+        <br />
+        <Button 
+          variant="text"
+          size="large"
+          style={{
+            fontSize: "1.2rem"
+          }}
+          onClick={props.loginFunc}
+        >
+          Already a user? Login.
         </Button>
       </Box>
     </>

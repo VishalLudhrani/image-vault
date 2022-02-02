@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 const pages = [
   {
@@ -8,11 +9,11 @@ const pages = [
     link: 'https://github.com/VishalLudhrani/image-vault'
   }
 ];
-const settings = ['My uploads', 'Logout'];
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -28,6 +29,17 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const settingsUploadBtnHandler = () => {
+    handleCloseUserMenu();
+    navigate('/my-uploads');
+  }
+
+  const settingsLogoutBtnHandler = () => {
+    handleCloseUserMenu();
+    props.logoutFunc();
+    navigate('/');
+  }
 
   return (
     <AppBar position="static">
@@ -118,10 +130,11 @@ const Navbar = () => {
             ))}
           </Box>
 
+          {props.user != null && (
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src={props.user.photoURL} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -140,13 +153,15 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={settingsUploadBtnHandler}>
+                <Typography textAlign="center">My uploads</Typography>
+              </MenuItem>
+              <MenuItem onClick={settingsLogoutBtnHandler}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

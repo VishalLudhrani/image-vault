@@ -1,12 +1,10 @@
 import React from "react";
-import Navbar from "./Navbar";
 import LandingPage from "./LandingPage";
 
-const Home = () => {
+const Home = (props) => {
   return(
     <>
-      <Navbar />
-      <LandingPage />
+      <LandingPage loginFunc={props.loginFunc} />
     </>
   );
 };
