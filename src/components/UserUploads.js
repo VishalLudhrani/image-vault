@@ -1,5 +1,5 @@
-import { ImageList, ImageListItem, ImageListItemBar, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Grid, ImageList, ImageListItem, ImageListItemBar, Modal, Typography } from "@mui/material";
+import React, { useState } from "react";
 
 const userUploads = [
   {
@@ -34,19 +34,89 @@ const userUploads = [
   },
 ]
 
-const UserUploads = () => {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '50%',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: '0.5rem'
+};
+
+const UserUploads = (props) => {
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
   return(
     <>
-      <Typography
-        variant="h3"
-        component="h2"
+      <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h4" component="h2">
+            Upload a new image.
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Upload image
+          </Typography>
+          <br />
+          <input type="file" accept="image/png, image/jpeg" onChange={props.onFileChange} />
+          <br />
+          <Box sx={{display: "flex"}}>
+            <Button
+              variant="outlined"
+              onClick={handleModalClose}
+              sx={{flex: "auto", margin: "auto 0.25rem"}}
+            >
+              Close
+            </Button>
+            <Button
+              variant="contained"
+              disabled={props.isImageNull}
+              sx={{flex: "auto", margin: "auto 0.25rem"}}
+              onClick={props.onFileUpload}
+            >
+              Upload
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+      <Grid
+        container
+        spacing={2}
         sx={{
-          textAlign: 'center',
-          marginTop: '16px'
+          alignItems: "center",
+          marginTop: 0
         }}
       >
-        My uploads
-      </Typography>
+        <Grid item xs={8}>
+          <Typography
+            variant="h3"
+            component="h2"
+            sx={{
+              textAlign: "center"
+            }}
+          >
+            My uploads
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Button 
+            variant="contained"
+            onClick={handleModalOpen}
+          >
+            Upload new
+          </Button>
+        </Grid>
+      </Grid>
       <ImageList
         sx={{
           display: 'grid',

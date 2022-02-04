@@ -30,6 +30,7 @@ const provider = new GoogleAuthProvider();
 const App = () => {
 
   const [user, setUser] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (u) => {
@@ -45,11 +46,12 @@ const App = () => {
   const login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
+        // the user was successfully logged in
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        // const user = result.user;
         // ...
       }).catch((error) => {
         // Handle Errors here.
@@ -67,12 +69,33 @@ const App = () => {
     });
   }
 
+  const onFileChange = event => {
+    setImage(event.target.files[0]);
+  }
+
+  const onFileUpload = () => {
+    const formData = new FormData();
+
+    formData.append(
+      "image",
+      image,
+      image.name
+    );
+
+    console.log(image);
+    setFileToNull();
+  }
+
+  const setFileToNull = () => {
+    setImage(null);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar user={user} logoutFunc={logout} />
       <Routes>
         <Route path='/' element={<Home loginFunc={login} />} />
-        <Route path='/my-uploads' element={<UserUploads user={user} />} />
+        <Route path='/my-uploads' element={<UserUploads onFileUpload={onFileUpload} isImageNull={image == null} onFileChange={onFileChange} />} />
       </Routes>
     </ThemeProvider>
   );
