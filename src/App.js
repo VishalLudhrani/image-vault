@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import theme from './theme/theme';
 import UserUploads from './components/UserUploads';
+import axios from 'axios';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -74,15 +75,25 @@ const App = () => {
   }
 
   const onFileUpload = () => {
-    const formData = new FormData();
+    const reader = new FileReader();
+    const PROXY_URL = "https://cors-anywhere.herokuapp.com";
+    const POST_URL = "https://api.imgbb.com/1/upload?";
+    let imageBase64 = "";
 
-    formData.append(
-      "image",
-      image,
-      image.name
-    );
+    reader.onload = () => {
+      imageBase64 = reader.result.replace("data:", "").replace(/^.+,/, "");
+      axios.post(`${PROXY_URL}/${POST_URL}key=${process.env.REACT_APP_IMGBB_APIKEY}`, {
+        image: imageBase64
+      })
+       .then((res) => {
+         console.log(res);
+       })
+       .catch(err => {
+         console.error(err);
+       });
+    }
+    reader.readAsDataURL(image);
 
-    console.log(image);
     setFileToNull();
   }
 

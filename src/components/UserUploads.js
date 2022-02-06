@@ -68,7 +68,11 @@ const UserUploads = (props) => {
             Upload image
           </Typography>
           <br />
-          <input type="file" accept="image/png, image/jpeg" onChange={props.onFileChange} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={props.onFileChange} />
+          <br />
           <br />
           <Box sx={{display: "flex"}}>
             <Button
